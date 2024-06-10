@@ -11,7 +11,7 @@ import "dotenv/config";
 const app = express();
 app.use(express.json());
 
-app.use(log);
+app.use(log); // Always declare before the routes!
 
 app.use("/events", eventsRouter);
 app.use("/users", usersRouter);
