@@ -4,8 +4,12 @@ import eventsRouter from "./routes/eventsRoute.js";
 import usersRouter from "./routes/usersRoute.js";
 import categoryRouter from "./routes/categoriesRoute.js";
 
+import { log } from "./middleware/logMiddleware.js";
+
 const app = express();
 app.use(express.json());
+
+app.use(log);
 
 app.use("/events", eventsRouter);
 app.use("/users", usersRouter);
