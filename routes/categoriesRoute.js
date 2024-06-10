@@ -1,9 +1,12 @@
 import express from "express";
+
 import { getCategories } from "../services/categories/getCategories.js";
 import { getCategoryById } from "../services/categories/getCategoryById.js";
 import { createCategory } from "../services/categories/createCategory.js";
 import { updateCategoryById } from "../services/categories/updateCategoryById.js";
 import { deleteCategory } from "../services/categories/deleteCategory.js";
+
+import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -35,7 +38,7 @@ router.get("/:id", (req, res) => {
   }
 });
 
-router.post("/", (req, res) => {
+router.post("/", authMiddleware, (req, res) => {
   try {
     const { name } = req.body;
     const newCategory = createCategory(name);
@@ -46,7 +49,7 @@ router.post("/", (req, res) => {
   }
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", authMiddleware, (req, res) => {
   try {
     const { id } = req.params;
     const { name } = req.body;
@@ -58,7 +61,7 @@ router.put("/:id", (req, res) => {
   }
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", authMiddleware, (req, res) => {
   try {
     const { id } = req.params;
     const deletedCategoryId = deleteCategory(id);

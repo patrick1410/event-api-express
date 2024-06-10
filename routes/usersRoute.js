@@ -1,9 +1,12 @@
 import express from "express";
+
 import { getUsers } from "../services/users/getUsers.js";
 import { getUserById } from "../services/users/getUserById.js";
 import { createUser } from "../services/users/createUser.js";
 import { updateUserById } from "../services/users/updateUserById.js";
 import { deleteUser } from "../services/users/deleteUser.js";
+
+import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -33,7 +36,7 @@ router.get("/:id", (req, res) => {
   }
 });
 
-router.post("/", (req, res) => {
+router.post("/", authMiddleware, (req, res) => {
   try {
     const { username, password, name, image } = req.body;
     const newUser = createUser(username, password, name, image);
@@ -44,7 +47,7 @@ router.post("/", (req, res) => {
   }
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", authMiddleware, (req, res) => {
   try {
     const { id } = req.params;
     const { username, password, name, image } = req.body;
@@ -56,7 +59,7 @@ router.put("/:id", (req, res) => {
   }
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", authMiddleware, (req, res) => {
   try {
     const { id } = req.params;
     const deletedUserId = deleteUser(id);
