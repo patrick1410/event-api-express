@@ -1,4 +1,5 @@
 import categoryData from "../../data/categories.json" assert { type: "json" };
+import NotFoundError from "../../errors/NotFoundError.js";
 
 export const updateCategoryById = (id, name) => {
   const category = categoryData.categories.find(
@@ -6,7 +7,7 @@ export const updateCategoryById = (id, name) => {
   );
 
   if (!category) {
-    throw new Error(`Category with id ${id} was not found!`);
+    throw new NotFoundError("Category", id);
   }
 
   category.name = name ?? category.name;

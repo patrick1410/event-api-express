@@ -7,6 +7,7 @@ import { updateUserById } from "../services/users/updateUserById.js";
 import { deleteUser } from "../services/users/deleteUser.js";
 
 import authMiddleware from "../middleware/auth.js";
+import notFoundErrorHandler from "../middleware/notFoundErrorHandler.js";
 
 const router = express.Router();
 
@@ -20,8 +21,9 @@ router.get("/", (req, res) => {
   }
 });
 
-router.get("/:id", (req, res) => {
-  try {
+router.get(
+  "/:id",
+  (req, res) => {
     const { id } = req.params;
     const user = getUserById(id);
 
@@ -30,11 +32,9 @@ router.get("/:id", (req, res) => {
     } else {
       res.status(200).json(user);
     }
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong while getting user by id!");
-  }
-});
+  },
+  notFoundErrorHandler
+);
 
 router.post("/", authMiddleware, (req, res) => {
   try {
@@ -47,20 +47,22 @@ router.post("/", authMiddleware, (req, res) => {
   }
 });
 
-router.put("/:id", authMiddleware, (req, res) => {
-  try {
+router.put(
+  "/:id",
+  authMiddleware,
+  (req, res) => {
     const { id } = req.params;
     const { username, password, name, image } = req.body;
     const updatedUser = updateUserById(id, username, password, name, image);
     res.status(200).json(updatedUser);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong while updating user by id!");
-  }
-});
+  },
+  notFoundErrorHandler
+);
 
-router.delete("/:id", authMiddleware, (req, res) => {
-  try {
+router.delete(
+  "/:id",
+  authMiddleware,
+  (req, res) => {
     const { id } = req.params;
     const deletedUserId = deleteUser(id);
 
@@ -71,10 +73,8 @@ router.delete("/:id", authMiddleware, (req, res) => {
         message: `User with id ${deletedUserId} was deleted!`,
       });
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Something went wrong while deleting user by id!");
-  }
-});
+  },
+  notFoundErrorHandler
+);
 
 export default router;

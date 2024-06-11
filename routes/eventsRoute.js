@@ -7,6 +7,7 @@ import { updateEventById } from "../services/events/updateEventById.js";
 import { deleteEvent } from "../services/events/deleteEvent.js";
 
 import authMiddleware from "../middleware/auth.js";
+import notFoundErrorHandler from "../middleware/notFoundErrorHandler.js";
 
 const router = express.Router();
 
@@ -21,8 +22,9 @@ router.get("/", (req, res) => {
   }
 });
 
-router.get("/:id", (req, res) => {
-  try {
+router.get(
+  "/:id",
+  (req, res) => {
     const { id } = req.params;
     const event = getEventById(id);
 
@@ -31,43 +33,43 @@ router.get("/:id", (req, res) => {
     } else {
       res.status(200).json(event);
     }
+  },
+  notFoundErrorHandler
+);
+
+router.post("/", authMiddleware, (req, res) => {
+  try {
+    const {
+      createdBy,
+      title,
+      description,
+      image,
+      categoryIds,
+      location,
+      startTime,
+      endTime,
+    } = req.body;
+    const newEvent = createEvent(
+      createdBy,
+      title,
+      description,
+      image,
+      categoryIds,
+      location,
+      startTime,
+      endTime
+    );
+    res.status(201).json(newEvent);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Something went wrong while getting event by id!");
+    res.status(500).send("Something went wrong while creating new event!");
   }
 });
 
-router.post("/", authMiddleware, (req, res) => {
-  // try {
-  const {
-    createdBy,
-    title,
-    description,
-    image,
-    categoryIds,
-    location,
-    startTime,
-    endTime,
-  } = req.body;
-  const newEvent = createEvent(
-    createdBy,
-    title,
-    description,
-    image,
-    categoryIds,
-    location,
-    startTime,
-    endTime
-  );
-  res.status(201).json(newEvent);
-  // } catch (error) {
-  //   console.error(error);
-  //   res.status(500).send("Something went wrong while creating new event!");
-  // }
-});
-
-router.put("/:id", authMiddleware, (req, res) => {
-  try {
+router.put(
+  "/:id",
+  authMiddleware,
+  (req, res) => {
     const { id } = req.params;
     const {
       createdBy,
@@ -91,14 +93,14 @@ router.put("/:id", authMiddleware, (req, res) => {
       endTime
     );
     res.status(200).json(updatedEvent);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Something went wrong while updating event by id!");
-  }
-});
+  },
+  notFoundErrorHandler
+);
 
-router.delete("/:id", authMiddleware, (req, res) => {
-  try {
+router.delete(
+  "/:id",
+  authMiddleware,
+  (req, res) => {
     const { id } = req.params;
     const deletedEventId = deleteEvent(id);
 
@@ -109,10 +111,8 @@ router.delete("/:id", authMiddleware, (req, res) => {
         message: `Event with id ${deletedEventId} was deleted!`,
       });
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Something went wrong while deleting event by id!");
-  }
-});
+  },
+  notFoundErrorHandler
+);
 
 export default router;

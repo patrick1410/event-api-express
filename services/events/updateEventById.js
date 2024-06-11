@@ -1,4 +1,5 @@
 import eventData from "../../data/events.json" assert { type: "json" };
+import NotFoundError from "../../errors/NotFoundError.js";
 
 export const updateEventById = (
   id,
@@ -14,7 +15,7 @@ export const updateEventById = (
   const event = eventData.events.find((event) => event.id === id);
 
   if (!event) {
-    throw new Error(`Book with id ${id} was not found!`);
+    throw new NotFoundError("Event", id);
   }
 
   event.createdBy = createdBy ?? event.createdBy;

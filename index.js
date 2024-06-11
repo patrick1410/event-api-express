@@ -12,7 +12,7 @@ import { nodeProfilingIntegration } from "@sentry/profiling-node";
 const app = express();
 
 Sentry.init({
-  dsn: "https://ac3452c7b2f79cef8a88680dc76c3a77@o4507390477271040.ingest.de.sentry.io/4507413031551056",
+  dsn: process.env.SENTRY_DSN,
   integrations: [nodeProfilingIntegration()],
   // Performance Monitoring
   tracesSampleRate: 1.0, //  Capture 100% of the transactions

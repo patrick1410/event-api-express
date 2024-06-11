@@ -1,10 +1,11 @@
 import userData from "../../data/users.json" assert { type: "json" };
+import NotFoundError from "../../errors/NotFoundError.js";
 
 export const updateUserById = (id, username, password, name, image) => {
   const user = userData.users.find((user) => user.id === id);
 
   if (!user) {
-    throw new Error(`User with id ${id} was not found!`);
+    throw new NotFoundError("User", id);
   }
 
   user.username = username ?? user.username;

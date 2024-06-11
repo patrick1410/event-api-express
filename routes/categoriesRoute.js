@@ -7,6 +7,7 @@ import { updateCategoryById } from "../services/categories/updateCategoryById.js
 import { deleteCategory } from "../services/categories/deleteCategory.js";
 
 import authMiddleware from "../middleware/auth.js";
+import notFoundErrorHandler from "../middleware/notFoundErrorHandler.js";
 
 const router = express.Router();
 
@@ -22,8 +23,9 @@ router.get("/", (req, res) => {
   }
 });
 
-router.get("/:id", (req, res) => {
-  try {
+router.get(
+  "/:id",
+  (req, res) => {
     const { id } = req.params;
     const category = getCategoryById(id);
 
@@ -32,11 +34,9 @@ router.get("/:id", (req, res) => {
     } else {
       res.status(200).json(category);
     }
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong while getting category by id!");
-  }
-});
+  },
+  notFoundErrorHandler
+);
 
 router.post("/", authMiddleware, (req, res) => {
   try {
@@ -49,20 +49,22 @@ router.post("/", authMiddleware, (req, res) => {
   }
 });
 
-router.put("/:id", authMiddleware, (req, res) => {
-  try {
+router.put(
+  "/:id",
+  authMiddleware,
+  (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
     const updatedCategory = updateCategoryById(id, name);
     res.status(200).json(updatedCategory);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong while updating category by id!");
-  }
-});
+  },
+  notFoundErrorHandler
+);
 
-router.delete("/:id", authMiddleware, (req, res) => {
-  try {
+router.delete(
+  "/:id",
+  authMiddleware,
+  (req, res) => {
     const { id } = req.params;
     const deletedCategoryId = deleteCategory(id);
 
@@ -73,10 +75,8 @@ router.delete("/:id", authMiddleware, (req, res) => {
         message: `Category with id ${deletedCategoryId} was deleted!`,
       });
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Something went wrong while deleting category by id!");
-  }
-});
+  },
+  notFoundErrorHandler
+);
 
 export default router;

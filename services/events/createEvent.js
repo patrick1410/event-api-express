@@ -11,7 +11,6 @@ export const createEvent = (
   startTime,
   endTime
 ) => {
-  throw new Error("Not implemented!"); // straks weghalen
   const newEvent = {
     id: uuid(),
     createdBy,
