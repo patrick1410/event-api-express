@@ -38,32 +38,32 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", authMiddleware, (req, res) => {
-  try {
-    const {
-      createdBy,
-      title,
-      description,
-      image,
-      categoryIds,
-      location,
-      startTime,
-      endTime,
-    } = req.body;
-    const newEvent = createEvent(
-      createdBy,
-      title,
-      description,
-      image,
-      categoryIds,
-      location,
-      startTime,
-      endTime
-    );
-    res.status(201).json(newEvent);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Something went wrong while creating new event!");
-  }
+  // try {
+  const {
+    createdBy,
+    title,
+    description,
+    image,
+    categoryIds,
+    location,
+    startTime,
+    endTime,
+  } = req.body;
+  const newEvent = createEvent(
+    createdBy,
+    title,
+    description,
+    image,
+    categoryIds,
+    location,
+    startTime,
+    endTime
+  );
+  res.status(201).json(newEvent);
+  // } catch (error) {
+  //   console.error(error);
+  //   res.status(500).send("Something went wrong while creating new event!");
+  // }
 });
 
 router.put("/:id", authMiddleware, (req, res) => {
