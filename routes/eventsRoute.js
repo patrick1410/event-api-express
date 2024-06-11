@@ -29,7 +29,7 @@ router.get(
     const event = getEventById(id);
 
     if (!event) {
-      res.status(404).send(`Event with id ${id} was not found!`);
+      res.status(404).json({ message: `Event with id ${id} was not found!` });
     } else {
       res.status(200).json(event);
     }

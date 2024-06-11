@@ -5,5 +5,6 @@ export const getUserById = (id) => {
   if (!id) {
     throw new NotFoundError("User", id);
   }
+
   return userData.users.find((user) => user.id === id);
 };

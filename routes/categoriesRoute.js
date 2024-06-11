@@ -30,7 +30,9 @@ router.get(
     const category = getCategoryById(id);
 
     if (!category) {
-      res.status(404).send(`Category with id ${id} was not found!`);
+      res
+        .status(404)
+        .json({ message: `Category with id ${id} was not found!` });
     } else {
       res.status(200).json(category);
     }
