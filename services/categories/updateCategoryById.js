@@ -12,5 +12,5 @@ export const updateCategoryById = (id, name) => {
 
   category.name = name ?? category.name;
 
-  return category;
+  return { message: "Category updated successfully", category };
 };

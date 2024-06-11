@@ -13,5 +13,5 @@ export const updateUserById = (id, username, password, name, image) => {
   user.name = name ?? user.name;
   user.image = image ?? user.image;
 
-  return user;
+  return { message: "User updated successfully", user };
 };

@@ -27,5 +27,5 @@ export const updateEventById = (
   event.startTime = startTime ?? event.startTime;
   event.endTime = endTime ?? event.endTime;
 
-  return event;
+  return { message: "Event updated successfully", event };
 };
