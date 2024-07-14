@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "test": "node run-tests.js"
+    "test-positive": "newman run \"./postman/collections/Events API.json\" -e \"../event-api-express/postman/environments/Local.postman_environment.json\"",
+    "test-negative": "newman run \"./postman/collections/Events API Negative.json\" -e \"../event-api-express/postman/environments/Local.postman_environment.json\"",
+    "test": "npm run test-positive && npm run test-negative"
   },
   "author": "Patrick",
   "license": "ISC",
